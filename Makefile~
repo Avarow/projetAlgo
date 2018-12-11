@@ -1,0 +1,54 @@
+CC=gcc
+DIR_OBJ=bin
+DIR_LIB=lib
+DIR_MATRIX=src/matrix
+DIR_GAME=src/connect4
+CPPFLAGS=-Iinclude -fPIC
+LDLAGS=
+#On récupère tous les fichiers .c (qui ne sont pas des tests)
+#de manière récursive dans les sous répertoires
+SRC = $(shell find ./src -name '*.c' ! -name 'test*.c' )
+TEST_MATRIX = $(DIR_MATRIX)/testmatrix.o
+TEST_GAME = $(DIR_GAME)/testgame.o
+MATRIX = $(DIR_MATRIX)/matrix.o
+GAME =$(DIR_GAME)/game.o
+
+#On récupère également les .h qui sont dans le sous dossier include
+HEADERS = $(shell find ./include -name '*.h')
+#Les fichiers objets sont les mêmes que les fichiers c, mais l'extension est remplacée par .o 
+OBJS = $(SRC:.c=.o)
+
+
+all : main testgame testmatrix
+
+main : $(OBJS) 
+	$(CC) -o $@ $(OBJS) $(LDFLAGS) 
+
+testgame : $(TEST_GAME) $(GAME) $(MATRIX)
+	$(CC) -o $@ $^ $(CPPFLAGS)
+
+testmatrix : $(TEST_MATRIX) $(MATRIX)
+	$(CC) -o $@ $^ $(CPPFLAGS)
+
+staticlib : libmatrix.a 
+
+libmatrix.a : $(MATRIX)
+	ar crv $(DIR_LIB)/$@ $<
+
+dynamiclib : libmatrix.so 
+
+libmatrix.so : $(MATRIX) 
+	$(CC) -shared -o $(DIR_LIB)/$@ $<
+
+%.o : %.c $(HEADERS)
+	$(CC) -o $@ -c $< $(CPPFLAGS)
+
+clean :
+	find . -name '*o' -delete
+
+doc :
+	doxygen
+
+.PHONY: all clean staticlib dynamiclib
+
+
