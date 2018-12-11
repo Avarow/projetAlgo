@@ -1,7 +1,6 @@
 #include <histogram.h>
 int main(){
 	cell* c;
-	cell* c2;
-	c=create_cell(1,c2);
+	c=create_cell(42,NULL);
 	return 0;
 }
