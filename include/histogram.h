@@ -1,11 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define TAILLE 256
+
 typedef struct _cell{
 	unsigned char B;
 	int freq;
 	struct _cell* next;
 } cell;
+
+
+typedef struct _histo{
+
+} histo;
 
 cell* create_cell(int B, cell* next);
 
@@ -14,3 +21,5 @@ cell* insert_cell(int B, cell* head);
 cell* delete_list(cell* list);
 
 void print_cell(cell* head);
+
+histo create_histo();

@@ -114,3 +114,14 @@ cell* delete_list(cell* list){
 	}
 }
 
+
+// @bug : ne marche pas
+histo create_histo(){
+	histo hist;
+	hist=malloc(sizeof(cell*)*TAILLE);
+	for (int i=0;i<TAILLE;i++){
+		hist[i]=malloc(sizeof(cell));
+	}
+
+}
+
