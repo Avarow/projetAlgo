@@ -1,5 +1,9 @@
 #include <histogram.h>
 
+
+/*
+* Fonction utilisée pour initialiser une cellule avec une valeur B
+*/
 cell* create_cell(int B, cell* next){
 	cell* c;
 	c=(cell*)malloc(sizeof(cell));
@@ -10,6 +14,10 @@ cell* create_cell(int B, cell* next){
 }
 
 
+/*
+* Fonction qu'on peut utiliser pour afficher le contenu d'une liste 
+* (ie : fréquence et valeur B)
+*/
 void print_cell(cell* head){
 	cell* current=head;
 	while(current != NULL){
@@ -21,6 +29,7 @@ void print_cell(cell* head){
 }
 
 /*
+* @todo : Réfléchir à la possibilité de faire un algorithme récursif pour un code plus optimisé...
 * L'algorithme marche de la manière suivante : 
 * Dans un premier temps, on boucle dans la liste pour savoir si la valeur de B est présente dans une cellule.
 * Si c'est le cas, alors on incrémente la fréquence de la cellule correspondante
@@ -49,7 +58,7 @@ cell* insert_cell(int B, cell* head){
 		current=current->next;
 		}
 
-	// on remet à zéro notre élément de parcours 
+	// on remet à zéro notre cellule de parcours 
 	current=head;
 	
 	while (!found){
@@ -90,3 +99,18 @@ cell* insert_cell(int B, cell* head){
 		}
 		return head;
 	}
+
+
+/*
+* Fonction récursive qui supprime et libère la mémoire utilisée par une liste
+*/
+cell* delete_list(cell* list){
+	if (list != NULL){
+		free(list);
+		list=delete_list(list->next);
+	}
+	else{
+		return NULL;
+	}
+}
+

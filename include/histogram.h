@@ -11,4 +11,6 @@ cell* create_cell(int B, cell* next);
 
 cell* insert_cell(int B, cell* head);
 
+cell* delete_list(cell* list);
+
 void print_cell(cell* head);
