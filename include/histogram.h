@@ -9,4 +9,6 @@ typedef struct _cell{
 
 cell* create_cell(int B, cell* next);
 
-void insert_cell(int B, cell* head);
+cell* insert_cell(int B, cell* head);
+
+void print_cell(cell* head);
