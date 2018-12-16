@@ -3,6 +3,7 @@
 
 #define TAILLE 256
 
+
 typedef struct _cell{
 	unsigned char B;
 	int freq;
@@ -10,9 +11,9 @@ typedef struct _cell{
 } cell;
 
 
-typedef struct _histo{
+// On définit le type histo comme étant un tableau à double entrée de pointeurs sur cell 
+typedef cell *** histo;
 
-} histo;
 
 cell* create_cell(int B, cell* next);
 

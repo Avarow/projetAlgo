@@ -52,9 +52,21 @@ void test_delete_list(){
 
 }
 
+void test_create_histo(){
+	histo h;
+	h=create_histo();
+	cell* c=create_cell(10,NULL);
+	h[0][0]=c;
+	assert(h[0][0]->B==10);
+	assert(h[0][0]->next==NULL);
+	printf("TEST CREATION D'HISTO : OK \n" );
+
+}
+
 int main(){
 	test_create_cell();
 	test_insert_cell();
 	test_delete_list();
+	test_create_histo();
 	return 0;
 }
