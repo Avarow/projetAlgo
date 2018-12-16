@@ -24,3 +24,5 @@ cell* delete_list(cell* list);
 void print_cell(cell* head);
 
 histo create_histo();
+
+void delete_histo(histo h);
