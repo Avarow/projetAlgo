@@ -26,3 +26,5 @@ void print_cell(cell* head);
 histo create_histo();
 
 void delete_histo(histo h);
+
+void init_histo(histo h);

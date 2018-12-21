@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "image.h"
 
-int main(int argc,char* argv[])
+int main(int c,char* argv[])
 {
   image toto,degrade=FAIRE_image();
   int color[3]={255,0,0};

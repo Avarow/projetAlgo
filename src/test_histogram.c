@@ -74,11 +74,17 @@ void test_delete_histo(){
 	printf("TEST SUPPRESSION D'HISTO : OK \n" );
 }
 
+void test_init_histo(){
+	histo h=create_histo();
+	init_histo(h);
+}
+
 int main(){
 	test_create_cell();
 	test_insert_cell();
 	test_delete_list();
 	test_create_histo();
 	test_delete_histo();
+	test_init_histo();
 	return 0;
 }

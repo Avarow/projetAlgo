@@ -1,4 +1,5 @@
 #include <histogram.h>
+#include <traitement.h>
 
 
 /*
@@ -119,7 +120,7 @@ cell* delete_list(cell* list){
 histo create_histo(){
 	// déclaration
 	histo hist;
-
+	
 	// allocation
 	hist=malloc(TAILLE*sizeof(cell *));
 		for (int i=0;i<TAILLE;i++){
@@ -139,7 +140,7 @@ histo create_histo(){
 }
 
 void init_histo(histo h){
-
+	image img=readImage("./PROJET_FONDEMENTS/IMAGES/deg.ppm");
 }
 
 void delete_histo(histo h){
