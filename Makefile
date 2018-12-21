@@ -13,7 +13,7 @@ HEADERS = $(shell find ./include -name '*.h')
 OBJS = $(SRC:.c=.o)
 
 
-all : main
+all : main testhisto
 
 main : $(OBJS) 
 	$(CC) -o $@ $(OBJS)

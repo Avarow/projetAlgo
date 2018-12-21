@@ -115,13 +115,40 @@ cell* delete_list(cell* list){
 }
 
 
-// @bug : ne marche pas
+
 histo create_histo(){
+	// déclaration
 	histo hist;
-	hist=malloc(sizeof(cell*)*TAILLE);
-	for (int i=0;i<TAILLE;i++){
-		hist[i]=malloc(sizeof(cell));
+
+	// allocation
+	hist=malloc(TAILLE*sizeof(cell *));
+		for (int i=0;i<TAILLE;i++){
+   			hist[i] =malloc(TAILLE*sizeof(cell));
+		}
+
+	// initialisation 
+	for (int j=0;j<TAILLE;j++){
+		for (int k=0;k<TAILLE;k++){
+			hist[j][k]=NULL;
+		}
 	}
 
+	return hist;
+	
+
+}
+
+void init_histo(histo h){
+
+}
+
+void delete_histo(histo h){
+	for (int i=0;i<TAILLE;i++){
+		for(int j=0;j<TAILLE;j++){
+			h[i][j]=delete_list(h[i][j]);
+		}
+	}
+	free(h);
+	h=NULL;
 }
 
