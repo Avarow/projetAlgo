@@ -1,6 +1,40 @@
 #include <histogram.h>
 #include <traitement.h>
 
+typedef struct histo_iter * histo_iter;
+
+struct histo_iter{
+	int R,G;
+	cell* current;
+};
+
+
+histo_iter create_histo_iter(histo h){
+	histo_iter iter;
+	boolean found=false;
+
+	while(!found){
+		for(int i=0;i<TAILLE;i++){
+			for(int j=0;j<TAILLE;j++){
+				if (h[i][j] != NULL){
+					iter->R=i;
+					iter->G=j;
+					iter->current=h[i][j];
+					found=true;
+
+				}
+			}
+		}
+	}
+	if (!found){
+		assert("Erreur. Histogramme vide.");
+	}
+	return iter;
+}
+
+void start_histo_iter(histo_iter iter){
+	iter->current=NULL;
+}
 
 /*
 * Fonction utilisée pour initialiser une cellule avec une valeur B
@@ -139,9 +173,29 @@ histo create_histo(){
 
 }
 
+
 void init_histo(histo h){
-	image img=readImage("./PROJET_FONDEMENTS/IMAGES/deg.ppm");
+	image img=readImage("./PROJET_FONDEMENTS/IMAGES/TABLES/table_fille_128.ppm");
+	unsigned char r,g,b;
+	for (int i=0;i<img.largeur*img.hauteur;i++){
+		// img.pixels[i] représente un pixel, constitué de 3 couleurs (r,g,b)
+		r=img.pixels[i][0];
+		g=img.pixels[i][1];
+		b=img.pixels[i][2];
+		if (h[r][g] == NULL){
+			h[r][g]=create_cell(b,NULL);
+		}
+		else{
+			h[r][g]=insert_cell(b,h[r][g]);
+		}
+		printf("ROUGE pixel %d : %u\n",i,img.pixels[i][0]);
+        printf("VERT pixel %d : %u\n",i,img.pixels[i][1]);
+        printf("BLEU pixel %d : %u\n",i,img.pixels[i][2]);
+        printf("\n");
+	}
 }
+
+
 
 void delete_histo(histo h){
 	for (int i=0;i<TAILLE;i++){
@@ -151,5 +205,9 @@ void delete_histo(histo h){
 	}
 	free(h);
 	h=NULL;
+}
+
+int give_freq_histo(histo h, int r, int g, int b){
+
 }
 

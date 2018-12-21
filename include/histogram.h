@@ -14,6 +14,7 @@ typedef struct _cell{
 // On définit le type histo comme étant un tableau à double entrée de pointeurs sur cell 
 typedef cell *** histo;
 
+typedef enum {false,true} boolean;
 
 cell* create_cell(int B, cell* next);
 
@@ -25,6 +26,8 @@ void print_cell(cell* head);
 
 histo create_histo();
 
+void init_histo(histo h);
+
 void delete_histo(histo h);
 
-void init_histo(histo h);
+int give_freq_histo(histo h, int r, int g, int b);
