@@ -1,40 +1,6 @@
 #include <histogram.h>
 #include <traitement.h>
 
-typedef struct histo_iter * histo_iter;
-
-struct histo_iter{
-	int R,G;
-	cell* current;
-};
-
-
-histo_iter create_histo_iter(histo h){
-	histo_iter iter;
-	boolean found=false;
-
-	while(!found){
-		for(int i=0;i<TAILLE;i++){
-			for(int j=0;j<TAILLE;j++){
-				if (h[i][j] != NULL){
-					iter->R=i;
-					iter->G=j;
-					iter->current=h[i][j];
-					found=true;
-
-				}
-			}
-		}
-	}
-	if (!found){
-		assert("Erreur. Histogramme vide.");
-	}
-	return iter;
-}
-
-void start_histo_iter(histo_iter iter){
-	iter->current=NULL;
-}
 
 /*
 * Fonction utilisée pour initialiser une cellule avec une valeur B
@@ -208,6 +174,83 @@ void delete_histo(histo h){
 }
 
 int give_freq_histo(histo h, int r, int g, int b){
+	cell* cell=h[r][g];
+	while(cell->B != b){
+		cell=cell->next;
+	}
+	return cell->freq;
+}
 
+
+histo_iter create_histo_iter(histo h){
+	histo_iter iter;
+	boolean found=false;
+	iter->histo=h;
+	while(!found){
+		for(int i=0;i<TAILLE;i++){
+			for(int j=0;j<TAILLE;j++){
+				if (h[i][j] != NULL){
+					iter->R=i;
+					iter->G=j;
+					iter->current=h[i][j];
+					found=true;
+
+				}
+			}
+		}
+	}
+	if (!found){
+		assert("Erreur. Histogramme vide.");
+	}
+	return iter;
+}
+
+void start_histo_iter(histo_iter iter){
+	iter=create_histo_iter(iter);
+}
+
+boolean next_histo_iter(histo_iter iter){
+	boolean res=false;
+	boolean found=false;
+	if (iter->current->next != NULL){
+		res=true;
+		iter->current=iter->current->next;
+	}
+	// alors on est en fin de liste de B 
+	else{
+		while(!found){
+			for(int i=iter->R+1;i<TAILLE;i++){
+				for(int j=iter->G+1;j<TAILLE;j++){
+					if (h[i][j] != NULL){
+						iter->R=i;
+						iter->G=j;
+						iter->current=h[i][j];
+						found=true;
+					}
+				}
+			}
+		}
+	}
+
+	if(found){
+		res=true;
+	}
+
+	return res;
+}
+
+void give_color_histo_iter(histo_iter iter, int* colors){
+	// 0 = R, 1 = G, 2 = B
+	colors[0]=iter->R;
+	colors[1]=iter->G;
+	colors[2]=iter->current->B;
+}
+
+int give_freq_histo_iter(histo iter iter){
+	return iter->current->freq;
+}
+
+void delete_histo_iter(histo_iter iter){
+	free(iter);
 }
 

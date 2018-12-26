@@ -16,6 +16,14 @@ typedef cell *** histo;
 
 typedef enum {false,true} boolean;
 
+typedef struct histo_iter * histo_iter;
+
+struct histo_iter{
+	histo histo;
+	int R,G;
+	cell* current;
+};
+
 cell* create_cell(int B, cell* next);
 
 cell* insert_cell(int B, cell* head);
