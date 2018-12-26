@@ -267,21 +267,6 @@ boolean next_histo_iter(histo_iter iter){
 				}
 			}
 		}
-	/*
-		while(!found){
-			for(int i=iter->R+1;i<TAILLE;i++){
-				printf("i %d\n" ,i);
-				for(int j=iter->G+1;j<TAILLE;j++){
-					if (iter->h[i][j] != NULL){
-						iter->R=i;
-						iter->G=j;
-						iter->current=iter->h[i][j];
-						found=true;
-					}
-				}
-			}
-		}
-		*/
 	}
 
 	if(found){
