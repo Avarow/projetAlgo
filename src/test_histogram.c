@@ -77,7 +77,22 @@ void test_delete_histo(){
 void test_init_histo(){
 	histo h=create_histo();
 	init_histo(h);
+	printf("TEST INIT HISTO : OK \n" );
 }
+
+void test_freq_histo(){
+	histo h=create_histo();
+	init_histo(h);
+	// pour l'image "deg.ppm", il doit y avoir 256 pixels pour chaque pixel.
+	// la valeur du rouge varie de 0 à 255 
+	// on a également 256 pixels blancs
+	int freq=give_freq_histo(h,255,255,255);
+	assert(freq==256);
+	freq=give_freq_histo(h,15,255,255);
+	assert(freq==256);
+	printf("TEST FREQUENCE HISTO : OK \n" );
+}
+
 
 int main(){
 	test_create_cell();
@@ -86,5 +101,6 @@ int main(){
 	test_create_histo();
 	test_delete_histo();
 	test_init_histo();
+	test_freq_histo();
 	return 0;
 }

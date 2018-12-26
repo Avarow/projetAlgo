@@ -141,7 +141,7 @@ histo create_histo(){
 
 
 void init_histo(histo h){
-	image img=readImage("./PROJET_FONDEMENTS/IMAGES/TABLES/table_fille_128.ppm");
+	image img=readImage("./PROJET_FONDEMENTS/IMAGES/deg.ppm");
 	unsigned char r,g,b;
 	for (int i=0;i<img.largeur*img.hauteur;i++){
 		// img.pixels[i] représente un pixel, constitué de 3 couleurs (r,g,b)
@@ -150,14 +150,20 @@ void init_histo(histo h){
 		b=img.pixels[i][2];
 		if (h[r][g] == NULL){
 			h[r][g]=create_cell(b,NULL);
+			
+
 		}
 		else{
 			h[r][g]=insert_cell(b,h[r][g]);
+			
 		}
+		/*
 		printf("ROUGE pixel %d : %u\n",i,img.pixels[i][0]);
         printf("VERT pixel %d : %u\n",i,img.pixels[i][1]);
         printf("BLEU pixel %d : %u\n",i,img.pixels[i][2]);
         printf("\n");
+        */
+        
 	}
 }
 
@@ -175,8 +181,19 @@ void delete_histo(histo h){
 
 int give_freq_histo(histo h, int r, int g, int b){
 	cell* cell=h[r][g];
-	while(cell->B != b){
-		cell=cell->next;
+	if (cell != NULL){
+		while(cell->B != b){
+			if(cell->next != NULL){
+				cell=cell->next;
+			}
+			else{
+				// alors il n y a pas le pixel que l'on recherche
+				return 0;
+			}
+		}
+	}
+	else{
+		return 0;
 	}
 	return cell->freq;
 }
@@ -206,7 +223,7 @@ histo_iter create_histo_iter(histo h){
 }
 
 void start_histo_iter(histo_iter iter){
-	iter=create_histo_iter(iter);
+	iter=create_histo_iter(iter->histo);
 }
 
 boolean next_histo_iter(histo_iter iter){
@@ -221,10 +238,10 @@ boolean next_histo_iter(histo_iter iter){
 		while(!found){
 			for(int i=iter->R+1;i<TAILLE;i++){
 				for(int j=iter->G+1;j<TAILLE;j++){
-					if (h[i][j] != NULL){
+					if (iter->histo[i][j] != NULL){
 						iter->R=i;
 						iter->G=j;
-						iter->current=h[i][j];
+						iter->current=iter->histo[i][j];
 						found=true;
 					}
 				}
@@ -246,7 +263,7 @@ void give_color_histo_iter(histo_iter iter, int* colors){
 	colors[2]=iter->current->B;
 }
 
-int give_freq_histo_iter(histo iter iter){
+int give_freq_histo_iter(histo_iter iter){
 	return iter->current->freq;
 }
 

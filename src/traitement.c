@@ -6,7 +6,7 @@ image readImage(char* nom){
 	FILE * file=fopen(nom,"rb");
 	if (file != NULL){
     fscanf(file,"%3s",img.magic_number);
-   	printf("img magic number : %s\n", img.magic_number);
+   	//printf("img magic number : %s\n", img.magic_number);
     
     char c1,c2;
     char com[255];
@@ -16,7 +16,7 @@ image readImage(char* nom){
     while(c2 =='#'){
       do{
 	     fscanf(file,"%s",com);
-	     printf("ON IGNORE : %s \n",com);
+	     //printf("ON IGNORE : %s \n",com);
 	     fscanf(file,"%c",&c1);
      }
       while(c1 != '\n');
@@ -31,7 +31,7 @@ image readImage(char* nom){
    	fscanf(file,"%d",&larg);
    	fscanf(file,"%d",&haut);
    	fscanf(file,"%d",&max);
-   	printf("larg : %d haut : %d max : %d\n",larg,haut,max);
+   	//printf("larg : %d haut : %d max : %d\n",larg,haut,max);
     img.largeur=larg;
     img.hauteur=haut;
     img.pixel_max=(unsigned char)max;  
