@@ -1,5 +1,4 @@
 #include <histogram.h>
-#include <traitement.h>
 
 
 /*
@@ -140,8 +139,8 @@ histo create_histo(){
 }
 
 
-void init_histo(histo h){
-	image img=readImage("./PROJET_FONDEMENTS/IMAGES/deg.ppm");
+void init_histo(histo h, char* nom){
+	image img=readImage(nom);
 	unsigned char r,g,b;
 	for (int i=0;i<img.largeur*img.hauteur;i++){
 		// img.pixels[i] représente un pixel, constitué de 3 couleurs (r,g,b)
@@ -150,8 +149,6 @@ void init_histo(histo h){
 		b=img.pixels[i][2];
 		if (h[r][g] == NULL){
 			h[r][g]=create_cell(b,NULL);
-			
-
 		}
 		else{
 			h[r][g]=insert_cell(b,h[r][g]);
@@ -200,53 +197,91 @@ int give_freq_histo(histo h, int r, int g, int b){
 
 
 histo_iter create_histo_iter(histo h){
-	histo_iter iter;
+	int i=0;
+	int j=0;
+	histo_iter iter=malloc(sizeof(histo_iter));
+	iter->current=(cell*)malloc(sizeof(cell));
 	boolean found=false;
-	iter->histo=h;
-	while(!found){
-		for(int i=0;i<TAILLE;i++){
-			for(int j=0;j<TAILLE;j++){
-				if (h[i][j] != NULL){
-					iter->R=i;
-					iter->G=j;
-					iter->current=h[i][j];
-					found=true;
+	iter->h=h;
 
-				}
+	while(!found && i<TAILLE-1){
+		if (h[i][j] != NULL){
+			iter->R=i;
+			iter->G=j;
+			iter->current=h[i][j];
+			found=true;
+		}
+		else{
+			if (j<TAILLE-1)
+				j++;
+			else{
+				i++;
+				j=0;
 			}
 		}
 	}
+
 	if (!found){
-		assert("Erreur. Histogramme vide.");
+		printf("Erreur. Histogramme vide.");
+		abort();
 	}
 	return iter;
 }
 
 void start_histo_iter(histo_iter iter){
-	iter=create_histo_iter(iter->histo);
+	iter=create_histo_iter(iter->h);
 }
 
 boolean next_histo_iter(histo_iter iter){
+	int i=iter->R;
+	int j=iter->G;
 	boolean res=false;
 	boolean found=false;
 	if (iter->current->next != NULL){
 		res=true;
-		iter->current=iter->current->next;
+		iter->current=iter->current->next;	
 	}
 	// alors on est en fin de liste de B 
 	else{
+		if (j<TAILLE-1){
+			j++;
+		}
+		else{
+			i++;
+			j=0;
+		}
+		while(!found && i<TAILLE){
+			if (iter->h[i][j] != NULL){
+				iter->R=i;
+				iter->G=j;
+				iter->current=iter->h[i][j];
+				
+				found=true;
+			}
+			else{
+				if (j<TAILLE)
+					j++;
+				else{
+					i++;
+					j=0;
+				}
+			}
+		}
+	/*
 		while(!found){
 			for(int i=iter->R+1;i<TAILLE;i++){
+				printf("i %d\n" ,i);
 				for(int j=iter->G+1;j<TAILLE;j++){
-					if (iter->histo[i][j] != NULL){
+					if (iter->h[i][j] != NULL){
 						iter->R=i;
 						iter->G=j;
-						iter->current=iter->histo[i][j];
+						iter->current=iter->h[i][j];
 						found=true;
 					}
 				}
 			}
 		}
+		*/
 	}
 
 	if(found){
@@ -258,9 +293,11 @@ boolean next_histo_iter(histo_iter iter){
 
 void give_color_histo_iter(histo_iter iter, int* colors){
 	// 0 = R, 1 = G, 2 = B
+
 	colors[0]=iter->R;
 	colors[1]=iter->G;
 	colors[2]=iter->current->B;
+
 }
 
 int give_freq_histo_iter(histo_iter iter){

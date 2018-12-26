@@ -76,13 +76,13 @@ void test_delete_histo(){
 
 void test_init_histo(){
 	histo h=create_histo();
-	init_histo(h);
+	init_histo(h,"./PROJET_FONDEMENTS/IMAGES/deg.ppm");
 	printf("TEST INIT HISTO : OK \n" );
 }
 
 void test_freq_histo(){
 	histo h=create_histo();
-	init_histo(h);
+	init_histo(h,"./PROJET_FONDEMENTS/IMAGES/deg.ppm");
 	// pour l'image "deg.ppm", il doit y avoir 256 pixels pour chaque pixel.
 	// la valeur du rouge varie de 0 à 255 
 	// on a également 256 pixels blancs

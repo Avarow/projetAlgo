@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <traitement.h>
 
 #define TAILLE 256
 
@@ -19,7 +20,7 @@ typedef enum {false,true} boolean;
 typedef struct histo_iter * histo_iter;
 
 struct histo_iter{
-	histo histo;
+	histo h;
 	int R,G;
 	cell* current;
 };
@@ -34,8 +35,21 @@ void print_cell(cell* head);
 
 histo create_histo();
 
-void init_histo(histo h);
+void init_histo(histo h, char* nom);
 
 void delete_histo(histo h);
 
 int give_freq_histo(histo h, int r, int g, int b);
+
+histo_iter create_histo_iter(histo h);
+
+void start_histo_iter(histo_iter iter);
+
+boolean next_histo_iter(histo_iter iter);
+
+void give_color_histo_iter(histo_iter iter, int* colors);
+
+int give_freq_histo_iter(histo_iter iter);
+
+void delete_histo_iter(histo_iter iter);
+

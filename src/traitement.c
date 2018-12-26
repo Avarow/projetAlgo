@@ -80,61 +80,12 @@ image readImage(char* nom){
     fclose(file);
 	}
   else{
-    assert("ERREUR OUVERTURE DE FICHIER\n");
+    printf("Erreur lors de l'ouverture du fichier\n" );
+    abort();
   }
   return img;
 }
 
-
-void asciiToBinary(image img, char* nom){
-  if (img.magic_number[1]=='2' || img.magic_number[1]=='3'){
-    char* c;
-    if (img.magic_number[1]=='2')
-      c="P5";
-    else
-      c="P6";
-    FILE * file=fopen(nom,"wb");
-    
-    /*
-    @todo : GERER LA TAILLE DES DONNEES 
-    ACTUELLEMENT, PAS AUTOMATIQUE, VALEURS JUSTE POUR LE FICHIER DE TEST
-    */
-    char hauteur[2];
-    char largeur[2];
-    char pixel_max[2];
-
-    // on convertit les données en string 
-    sprintf(hauteur,"%d",img.hauteur);
-    sprintf(largeur,"%d",img.largeur);
-    sprintf(pixel_max,"%d",(int)img.pixel_max);
-
-    // on concat la hauteur et la largeur
-    char* res = malloc(sizeof(char*)*3);
-    strcpy(res,hauteur);
-    strcat(res," ");
-    strcat(res,largeur);
-
-    // on écrit le magic number
-    fwrite(c,sizeof(char)*2,1,file);  
-    fwrite("\n",1,1,file);
-    // on écrit la hauteur et la largeur 
-    fwrite(res,sizeof(char*)*3,1,file);
-    fwrite("\n",1,1,file);
-    // on écrit le pixel max
-    fwrite(pixel_max,sizeof(char*)*2,1,file);
-    fwrite("\n",1,1,file);
-
-    for(int i=0;i<img.largeur*img.hauteur;i++){
-      printf("i :%d\n",i );
-      fwrite(img.pixels[i],3*sizeof(char*),1,file);
-    }
-    //fwrite(img.pixels,1,img.largeur*img.hauteur*3,file);
-    fclose(file);
-  }
-  else{
-    printf("Erreur : l'image n'est pas au format ASCII. Impossible de la convertir en binaire. \n");
-  }
-}
 
 
 

@@ -14,7 +14,3 @@ typedef struct{
 image readImage(char* nom);
 
 image allocImage(image img);
-
-void binaryToAscii(image img, char* nom);
-
-void asciiToBinary(image img, char* nom);
