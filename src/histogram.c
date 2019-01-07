@@ -121,9 +121,9 @@ histo create_histo(){
 	histo hist;
 	
 	// allocation
-	hist=malloc(TAILLE*sizeof(cell *));
+	hist=malloc(TAILLE*sizeof(cell*));
 		for (int i=0;i<TAILLE;i++){
-   			hist[i] =malloc(TAILLE*sizeof(cell));
+   			hist[i]=malloc(TAILLE*sizeof(cell));
 		}
 
 	// initialisation 
@@ -161,6 +161,7 @@ void init_histo(histo h, char* nom){
         printf("\n");
         */
         
+        
 	}
 }
 
@@ -197,26 +198,23 @@ int give_freq_histo(histo h, int r, int g, int b){
 
 
 histo_iter create_histo_iter(histo h){
-	int i=0;
-	int j=0;
-	histo_iter iter=malloc(sizeof(histo_iter));
+
+	int i;
+	int j;
+	histo_iter iter=(histo_iter)malloc(sizeof(histo_iter));
 	iter->current=(cell*)malloc(sizeof(cell));
 	boolean found=false;
 	iter->h=h;
 
-	while(!found && i<TAILLE-1){
-		if (h[i][j] != NULL){
-			iter->R=i;
-			iter->G=j;
-			iter->current=h[i][j];
-			found=true;
-		}
-		else{
-			if (j<TAILLE-1)
-				j++;
-			else{
-				i++;
-				j=0;
+
+	for(i=0;i<TAILLE && !found;i++){
+		for(j=0;j<TAILLE;j++){
+			if (h[i][j] != NULL){
+				iter->R=i;
+				iter->G=j;
+				iter->current=h[i][j];
+				found=true;
+				break;
 			}
 		}
 	}
@@ -243,6 +241,7 @@ boolean next_histo_iter(histo_iter iter){
 	}
 	// alors on est en fin de liste de B 
 	else{
+		// on cherche la couleur suivante 
 		if (j<TAILLE-1){
 			j++;
 		}
@@ -255,18 +254,18 @@ boolean next_histo_iter(histo_iter iter){
 				iter->R=i;
 				iter->G=j;
 				iter->current=iter->h[i][j];
-				
 				found=true;
 			}
 			else{
-				if (j<TAILLE)
-					j++;
+				if (j<TAILLE-1){
+				j++;
+				}
 				else{
 					i++;
 					j=0;
 				}
-			}
-		}
+			}	
+		}	
 	}
 
 	if(found){
@@ -278,10 +277,10 @@ boolean next_histo_iter(histo_iter iter){
 
 void give_color_histo_iter(histo_iter iter, int* colors){
 	// 0 = R, 1 = G, 2 = B
-
 	colors[0]=iter->R;
 	colors[1]=iter->G;
 	colors[2]=iter->current->B;
+
 
 }
 
@@ -290,6 +289,7 @@ int give_freq_histo_iter(histo_iter iter){
 }
 
 void delete_histo_iter(histo_iter iter){
+	delete_list(iter->current);
 	free(iter);
 }
 

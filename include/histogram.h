@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <traitement.h>
 
 #define TAILLE 256
@@ -21,7 +19,8 @@ typedef struct histo_iter * histo_iter;
 
 struct histo_iter{
 	histo h;
-	int R,G;
+	int R;
+	int G;
 	cell* current;
 };
 

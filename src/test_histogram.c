@@ -59,6 +59,7 @@ void test_create_histo(){
 	h[0][0]=c;
 	assert(h[0][0]->B==10);
 	assert(h[0][0]->next==NULL);
+	assert(h[255][255]==NULL);
 	printf("TEST CREATION D'HISTO : OK \n" );
 
 }

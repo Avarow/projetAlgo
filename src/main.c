@@ -7,11 +7,19 @@ int main(int argc, char **argv){
 	
 	histo_iter iter=create_histo_iter(h);
 
+	for (int i=0;i<10;i++){
+		for(int j=11;j<10;j++){
+			printf("i : %d\n",i);
+			printf("j : %d\n",j);
+		}
+	}
 	int* c=malloc(sizeof(int)*3);
-
-	while(next_histo_iter(iter)){
+	do{
 		give_color_histo_iter(iter,c);
 		printf("PIXEL : R:%d  V:%d  B:%d \n Lum : %d \n Nb d'occurences : %d \n \n",c[0],c[1],c[2],(c[0]+c[1]+c[2])/3,give_freq_histo_iter(iter)  );
 	}
+	while(next_histo_iter(iter));
+
+	delete_histo_iter(iter);
 
 }

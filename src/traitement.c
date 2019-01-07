@@ -12,7 +12,7 @@ image readImage(char* nom){
     char com[255];
     fscanf(file,"%c%c",&c1,&c2);
     // pour ignorer les commentaires
-    // @todo : Adapter le changement lorsque l'on rencontre un commentaire vide
+    // @todo : Adapter  lorsque l'on rencontre un commentaire vide
     while(c2 =='#'){
       do{
 	     fscanf(file,"%s",com);

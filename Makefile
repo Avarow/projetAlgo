@@ -2,22 +2,22 @@ CC=gcc
 DIR_OBJ=bin
 DIR_LIB=lib
 CPPFLAGS=-Iinclude
-#On récupère tous les fichiers .c (qui ne sont pas des tests)
-#de manière récursive dans les sous répertoires
-SRC = $(shell find ./src -name '*.c' ! -name 'test*.c' )
 TRAITEMENT=./src/traitement.o
 HISTO=./src/histogram.o
+QUANTIFICATION=./src/quantification.o
 TEST_HISTO=./src/test_histogram.o
+MAIN=./src/main.o
 #On récupère également les .h qui sont dans le sous dossier include
 HEADERS = $(shell find ./include -name '*.h')
-#Les fichiers objets sont les mêmes que les fichiers c, mais l'extension est remplacée par .o 
-OBJS = $(SRC:.c=.o)
 
 
-all : main testhisto
+all : main quantification testhisto
 
-main : $(OBJS) 
-	$(CC) -o $@ $(OBJS)
+main : $(TRAITEMENT) $(HISTO) $(MAIN)
+	$(CC) -o $@ $^ $(CPPFLAGS)
+
+quantification : $(QUANTIFICATION) $(TRAITEMENT) $(HISTO)
+	$(CC) -o $@ $^ $(CPPFLAGS)
 
 testhisto : $(TEST_HISTO) $(TRAITEMENT) $(HISTO)
 	$(CC) -o $@ $^ $(CPPFLAGS)
