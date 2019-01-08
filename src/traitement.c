@@ -1,9 +1,11 @@
 #include "traitement.h"
 
 image readImage(char* nom){
+  
 	image img;
 	char c;
 	FILE * file=fopen(nom,"rb");
+
 	if (file != NULL){
     fscanf(file,"%3s",img.magic_number);
    	//printf("img magic number : %s\n", img.magic_number);
@@ -24,6 +26,7 @@ image readImage(char* nom){
     }
    		
     // pour revenir un caractère avant 
+
     fseek(file,-1,SEEK_CUR);
    	int larg=0;
    	int haut=0;
@@ -35,7 +38,6 @@ image readImage(char* nom){
     img.largeur=larg;
     img.hauteur=haut;
     img.pixel_max=(unsigned char)max;  
-  
       if (img.magic_number[1]=='2'){
         // alors c'est un PGM ASCII  
         int gris;      
@@ -66,17 +68,23 @@ image readImage(char* nom){
         }
       }
       if (img.magic_number[1]=='6'){
+
         // en binaire, la première valeur affichée était toujours 10
         // j'en ai déduis que c'est un problème lié au retour à la ligne
         // il faut donc absorver le caractère avant de continuer
         char* retour=malloc(sizeof(char*));
         fread(retour,1,1,file);
         img.pixels=malloc(sizeof(char**)*3*img.largeur*img.hauteur);
+
         for (int i=0;i<img.largeur*img.hauteur;i++){
           img.pixels[i]=malloc(3*sizeof(char*));
           fread(img.pixels[i],3,1,file);
         }
+
       }
+
+
+      printf("image read\n");
     fclose(file);
 	}
   else{
@@ -84,6 +92,26 @@ image readImage(char* nom){
     abort();
   }
   return img;
+}
+
+
+void writeImage(image img, char* nom){
+    printf("start writing...\n");
+    FILE * file=fopen(nom,"wb");
+    if (file!=NULL){
+      char* c="P6";
+      fprintf(file, "%s\n",c);
+      fprintf(file, "%d %d \n",img.hauteur,img.largeur);
+      fprintf(file, "%d\n", (int)img.pixel_max);
+      for(int i=0;i<img.hauteur*img.largeur;i++){
+        fwrite(img.pixels[i],3,1,file);
+      }
+      fclose(file);
+    }
+    else{
+     printf("Erreur lors de l'ouverture du fichier\n");
+     abort();
+  }
 }
 
 

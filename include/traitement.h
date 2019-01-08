@@ -13,4 +13,6 @@ typedef struct{
 
 image readImage(char* nom);
 
+void writeImage(image img, char* nom);
+
 image allocImage(image img);

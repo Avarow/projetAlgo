@@ -4,15 +4,7 @@ int main(int argc, char **argv){
 	char* nom=argv[1];
 	histo h=create_histo();
 	init_histo(h,nom);
-	
 	histo_iter iter=create_histo_iter(h);
-
-	for (int i=0;i<10;i++){
-		for(int j=11;j<10;j++){
-			printf("i : %d\n",i);
-			printf("j : %d\n",j);
-		}
-	}
 	int* c=malloc(sizeof(int)*3);
 	do{
 		give_color_histo_iter(iter,c);
@@ -20,6 +12,10 @@ int main(int argc, char **argv){
 	}
 	while(next_histo_iter(iter));
 
+	
 	delete_histo_iter(iter);
+	
+	
+	
 
 }

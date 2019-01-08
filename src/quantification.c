@@ -15,7 +15,6 @@ void afficher_couleur(couleur c){
 void quantification(histo h, int* tab, int K){
 	histo_iter iter=create_histo_iter(h);
 
-	int i;
 	int* coul=malloc(sizeof(int)*3);
 	couleur liste[K];	
 	couleur vide;
@@ -23,7 +22,7 @@ void quantification(histo h, int* tab, int K){
 	vide.G=0;
 	vide.B=0;
 	vide.freq=-1;
-	for(i=0;i<K;i++){
+	for(int i=0;i<K;i++){
 		liste[i]=vide;
 	}
 	
@@ -52,20 +51,50 @@ void quantification(histo h, int* tab, int K){
 	}while(next_histo_iter(iter));
 
 
-	for(int k=0;k<K;k++){
-		afficher_couleur(liste[k]);
+	for(int k=0;k<K;k+=3){
+		tab[k]=liste[k].R;
+		tab[k+1]=liste[k].G;
+		tab[k+2]=liste[k].B;
 	}
+	delete_histo_iter(iter);
+}
+
+void couleur_proche(unsigned char* color, int* tab, unsigned char* pixel){
+	for(int i=0;i<3;i++){
+		color[i]=pixel[i];
+		
+	}
+}
+
+image mapping(image input, int* tab, int K){
 	
-	
+	image res=input;
+	for(int i=0;i<res.hauteur*res.largeur;i++){
+		// rechercher couleur dans tab 
+		//printf("i %d\n",i);
+		//res.pixels[i]=malloc(1);
+		// ecrire couleur dans output
+		for(int j=0;j<3;j++){ 
+			res.pixels[i][j]=tab[j];
+		}
+			//printf("i %d \n",i);
+			//printf("j %d \n",j);
+
+	}
+
+	return res;
 
 }
 
 int main(int argc, char **argv){
 	char* nom=argv[1];
+	image input = readImage(nom);
 	histo h=create_histo();
 	init_histo(h,nom);
-	// le nombre fixe de couleurs à afficher
 	int nbCouleurs=10;
 	int* tabCouleurs=malloc(nbCouleurs*3);
 	quantification(h,tabCouleurs,nbCouleurs);
+	printf("Quantification effectuee.\n");
+	image res = mapping(input,tabCouleurs,nbCouleurs);
+	writeImage(res,"test.ppm");
 }

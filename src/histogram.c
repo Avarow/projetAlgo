@@ -54,7 +54,7 @@ cell* insert_cell(int B, cell* head){
 		// alors on a trouvé la valeur de B et on incrémente la fréquence
 			current->freq+=1;
 			found=1;
-			}
+			}	
 		current=current->next;
 		}
 
@@ -152,17 +152,15 @@ void init_histo(histo h, char* nom){
 		}
 		else{
 			h[r][g]=insert_cell(b,h[r][g]);
-			
 		}
 		/*
 		printf("ROUGE pixel %d : %u\n",i,img.pixels[i][0]);
         printf("VERT pixel %d : %u\n",i,img.pixels[i][1]);
         printf("BLEU pixel %d : %u\n",i,img.pixels[i][2]);
         printf("\n");
-        */
-        
-        
+        */    
 	}
+	free(img.pixels);
 }
 
 
@@ -174,7 +172,6 @@ void delete_histo(histo h){
 		}
 	}
 	free(h);
-	h=NULL;
 }
 
 int give_freq_histo(histo h, int r, int g, int b){
