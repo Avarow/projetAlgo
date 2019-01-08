@@ -1,9 +1,9 @@
 #include <histogram.h>
 
 typedef struct _couleur{
-	int R;
-	int G;
-	int B;
+	unsigned char R;
+	unsigned char G;
+	unsigned char B;
 	int freq;
 } couleur;
 
@@ -12,7 +12,8 @@ void afficher_couleur(couleur c){
 	printf("Frequence : %d \n \n", c.freq);
 }
 
-void quantification(histo h, int* tab, int K){
+void quantification(histo h, unsigned char* tab, int K){
+	printf("Quantification en cours...\n");
 	histo_iter iter=create_histo_iter(h);
 
 	int* coul=malloc(sizeof(int)*3);
@@ -25,10 +26,8 @@ void quantification(histo h, int* tab, int K){
 	for(int i=0;i<K;i++){
 		liste[i]=vide;
 	}
-	
 	couleur c;
 	int freq;
-
 	do{
 		give_color_histo_iter(iter,coul);
 		freq=give_freq_histo_iter(iter);
@@ -56,32 +55,58 @@ void quantification(histo h, int* tab, int K){
 		tab[k+1]=liste[k].G;
 		tab[k+2]=liste[k].B;
 	}
-	delete_histo_iter(iter);
-}
-
-void couleur_proche(unsigned char* color, int* tab, unsigned char* pixel){
-	for(int i=0;i<3;i++){
-		color[i]=pixel[i];
-		
+	/*
+	for(int l=0;l<K;l++){
+		afficher_couleur(liste[l]);
 	}
+	*/
+	delete_histo_iter(iter);
+	printf("Quantification effectuee\n");
 }
 
-image mapping(image input, int* tab, int K){
+void couleur_proche(unsigned char* pixel, unsigned char* tab, int K){
+	double dr=TAILLE;
+	double dg=TAILLE;
+	double db=TAILLE; 
+	int index=0;
+	unsigned char r = pixel[0];
+	unsigned char g = pixel[1];
+	unsigned char b = pixel[2];
+	for(int i=0;i<K;i+=3){
+		double new_dr=abs(tab[i]-pixel[0]);
+		double new_dg=abs(tab[i+1]-pixel[1]);
+		double new_db=abs(tab[i+2]-pixel[2]);
+
+		if (new_dr+new_dg+new_db==0){
+			index=i;
+		}
+		else{
+
+		if( (new_dr+new_dg+new_db) < (dr+dg+db) ) {
+			dr=new_dr;
+			dg=new_dg;
+			db=new_db;
+			index=i;
+			}
+		}
+	}
+	//printf("index %d\n",index );
+	for(int j=0;j<3;j++){
+		pixel[j]=tab[index+j];
+	}
+
+	//printf("Couleur originale : %d %d %d \n", r, g, b);
+	//printf("Couleur gardee : %d %d %d \n", tab[index], tab[index+1], tab[index+2]);
+}
+
+image mapping(image input, unsigned char* tab, int K){
 	
+	printf("Mapping en cours...\n");
 	image res=input;
 	for(int i=0;i<res.hauteur*res.largeur;i++){
-		// rechercher couleur dans tab 
-		//printf("i %d\n",i);
-		//res.pixels[i]=malloc(1);
-		// ecrire couleur dans output
-		for(int j=0;j<3;j++){ 
-			res.pixels[i][j]=tab[j];
-		}
-			//printf("i %d \n",i);
-			//printf("j %d \n",j);
-
+		couleur_proche(res.pixels[i],tab, K);
 	}
-
+	printf("Mapping effectue\n");
 	return res;
 
 }
@@ -91,10 +116,11 @@ int main(int argc, char **argv){
 	image input = readImage(nom);
 	histo h=create_histo();
 	init_histo(h,nom);
-	int nbCouleurs=10;
-	int* tabCouleurs=malloc(nbCouleurs*3);
+	int nbCouleurs=5000;
+	unsigned char* tabCouleurs=malloc(sizeof(char)*nbCouleurs*3);
 	quantification(h,tabCouleurs,nbCouleurs);
-	printf("Quantification effectuee.\n");
 	image res = mapping(input,tabCouleurs,nbCouleurs);
-	writeImage(res,"test.ppm");
+	strcat(nom,"_reduit");
+	strcat(nom,".ppm");
+	writeImage(res,nom);
 }

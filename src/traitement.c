@@ -77,14 +77,13 @@ image readImage(char* nom){
         img.pixels=malloc(sizeof(char**)*3*img.largeur*img.hauteur);
 
         for (int i=0;i<img.largeur*img.hauteur;i++){
+
           img.pixels[i]=malloc(3*sizeof(char*));
           fread(img.pixels[i],3,1,file);
         }
 
       }
 
-
-      printf("image read\n");
     fclose(file);
 	}
   else{
@@ -96,12 +95,11 @@ image readImage(char* nom){
 
 
 void writeImage(image img, char* nom){
-    printf("start writing...\n");
     FILE * file=fopen(nom,"wb");
     if (file!=NULL){
       char* c="P6";
       fprintf(file, "%s\n",c);
-      fprintf(file, "%d %d \n",img.hauteur,img.largeur);
+      fprintf(file, "%d %d \n",img.largeur,img.hauteur);
       fprintf(file, "%d\n", (int)img.pixel_max);
       for(int i=0;i<img.hauteur*img.largeur;i++){
         fwrite(img.pixels[i],3,1,file);
