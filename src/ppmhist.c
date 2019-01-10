@@ -11,8 +11,6 @@ int main(int argc, char **argv){
 		printf("PIXEL : R:%d  V:%d  B:%d \n Lum : %d \n Nb d'occurences : %d \n \n",c[0],c[1],c[2],(c[0]+c[1]+c[2])/3,give_freq_histo_iter(iter)  );
 	}
 	while(next_histo_iter(iter));
-
-	
 	delete_histo_iter(iter);
 	
 	

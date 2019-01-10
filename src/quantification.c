@@ -7,6 +7,9 @@ typedef struct _couleur{
 	int freq;
 } couleur;
 
+/*
+* 
+*/
 void afficher_couleur(couleur c){
 	printf("R:%d  G:%d  B:%d \n",c.R,c.G,c.B);
 	printf("Frequence : %d \n \n", c.freq);
@@ -55,11 +58,6 @@ void quantification(histo h, unsigned char* tab, int K){
 		tab[k+1]=liste[k].G;
 		tab[k+2]=liste[k].B;
 	}
-	/*
-	for(int l=0;l<K;l++){
-		afficher_couleur(liste[l]);
-	}
-	*/
 	delete_histo_iter(iter);
 	printf("Quantification effectuee\n");
 }
@@ -90,13 +88,9 @@ void couleur_proche(unsigned char* pixel, unsigned char* tab, int K){
 			}
 		}
 	}
-	//printf("index %d\n",index );
 	for(int j=0;j<3;j++){
 		pixel[j]=tab[index+j];
 	}
-
-	//printf("Couleur originale : %d %d %d \n", r, g, b);
-	//printf("Couleur gardee : %d %d %d \n", tab[index], tab[index+1], tab[index+2]);
 }
 
 image mapping(image input, unsigned char* tab, int K){
@@ -113,10 +107,10 @@ image mapping(image input, unsigned char* tab, int K){
 
 int main(int argc, char **argv){
 	char* nom=argv[1];
+	int nbCouleurs=atoi(argv[2]);
 	image input = readImage(nom);
 	histo h=create_histo();
 	init_histo(h,nom);
-	int nbCouleurs=5000;
 	unsigned char* tabCouleurs=malloc(sizeof(char)*nbCouleurs*3);
 	quantification(h,tabCouleurs,nbCouleurs);
 	image res = mapping(input,tabCouleurs,nbCouleurs);

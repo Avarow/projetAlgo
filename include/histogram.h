@@ -24,6 +24,8 @@ struct histo_iter{
 	cell* current;
 };
 
+
+
 cell* create_cell(int B, cell* next);
 
 cell* insert_cell(int B, cell* head);

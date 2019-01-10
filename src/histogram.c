@@ -153,12 +153,6 @@ void init_histo(histo h, char* nom){
 		else{
 			h[r][g]=insert_cell(b,h[r][g]);
 		}
-		/*
-		printf("ROUGE pixel %d : %u\n",i,img.pixels[i][0]);
-        printf("VERT pixel %d : %u\n",i,img.pixels[i][1]);
-        printf("BLEU pixel %d : %u\n",i,img.pixels[i][2]);
-        printf("\n");
-        */    
 	}
 	free(img.pixels);
 }
@@ -202,8 +196,6 @@ histo_iter create_histo_iter(histo h){
 	iter->current=(cell*)malloc(sizeof(cell));
 	boolean found=false;
 	iter->h=h;
-
-
 	for(i=0;i<TAILLE && !found;i++){
 		for(j=0;j<TAILLE;j++){
 			if (h[i][j] != NULL){
@@ -238,7 +230,7 @@ boolean next_histo_iter(histo_iter iter){
 	}
 	// alors on est en fin de liste de B 
 	else{
-		// on cherche la couleur suivante 
+		// alors on cherche la couleur suivante 
 		if (j<TAILLE-1){
 			j++;
 		}
@@ -255,7 +247,7 @@ boolean next_histo_iter(histo_iter iter){
 			}
 			else{
 				if (j<TAILLE-1){
-				j++;
+					j++;
 				}
 				else{
 					i++;
@@ -277,8 +269,6 @@ void give_color_histo_iter(histo_iter iter, int* colors){
 	colors[0]=iter->R;
 	colors[1]=iter->G;
 	colors[2]=iter->current->B;
-
-
 }
 
 int give_freq_histo_iter(histo_iter iter){
